@@ -6,12 +6,14 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Server {
+   // я решил вынести все критические переменные в поля класса и сделал их статическими. (могу попробовать объяснить причину)
     private static ServerSocket server = null;
     private static Socket socket = null;
     private static Scanner sc = null;
     private static DataInputStream in = null;
     private static DataOutputStream out = null;
 
+    // в конструкторе я инициализирую только поля класса и запускаю потоки
     public Server(int port) {
         try {
             server = new ServerSocket(port);
@@ -30,6 +32,8 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    // сделал два метода rRecieve и rSend что бы не тащить всю логику в конструктор и не усложнять его.
 
     public Runnable rRecieve() {
         Runnable rRecieve = () -> {
@@ -67,6 +71,7 @@ public class Server {
 
     public static void main(String[] args) {
 
+        //
         try {
             Server server = new Server(8988);
         } finally {

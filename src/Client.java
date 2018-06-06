@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-
     private static Socket socket = null;
     private static DataInputStream in = null;
     private static DataOutputStream out = null;
@@ -62,6 +61,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
+      // есть проблема с закрытием socket. Если его закрывать, допустим в finally блоке, то программа всегда выдает ошибку socket.
         Client client = new Client("localHost", 8988);
     }
 
