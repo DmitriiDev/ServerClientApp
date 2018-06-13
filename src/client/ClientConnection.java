@@ -13,7 +13,7 @@ public class ClientConnection implements ServerConst, ServerAPI {
     private DataInputStream in = null;
     private DataOutputStream out = null;
     boolean isAuthorized = false;
-    int age;
+
 
     public ClientConnection() {
     }
@@ -68,7 +68,7 @@ public class ClientConnection implements ServerConst, ServerAPI {
                     setAuthorized(false);
                     view.showMessage("Connection closed");
                     view.switchWindows();
-                }else{
+                } else {
                     view.showMessage(msg);
                 }
 
@@ -86,7 +86,27 @@ public class ClientConnection implements ServerConst, ServerAPI {
     public void auth(String login, String pass) {
         try {
             out.writeUTF(AUTH + " " + login + " " + pass);
-        out.flush();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(String str){
+        try {
+            out.writeUTF(str);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void disconnect(){
+        try {
+            out.writeUTF(CLOSE_CONNECTION);
+            out.flush();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

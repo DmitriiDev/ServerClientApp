@@ -14,6 +14,10 @@ public class ClientHandler implements ServerAPI {
     private DataOutputStream out;
     private String nickanme;
 
+    public String getNickanme() {
+        return nickanme;
+    }
+
     public ClientHandler(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
@@ -21,10 +25,10 @@ public class ClientHandler implements ServerAPI {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-            new Thread(()->{
+            new Thread(() -> {
                 try {
                     authLoop();
-                    receiveLoop();
+                    receiveMsgLoop();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -36,31 +40,53 @@ public class ClientHandler implements ServerAPI {
 
     }
 
-    private void receiveLoop() {
+    private void receiveMsgLoop() throws IOException {
+        while (true) {
+            String received = in.readUTF();
+            if (received.startsWith(SYSTEM_SYMBOL)) {
+                if (received.equalsIgnoreCase(CLOSE_CONNECTION)) {
+                    break;
+                }
+                String[] items = received.split(" ");
+                if (items.length > 3 && items[0].equalsIgnoreCase(PM)) {
+                    String nickName = items[1];
+                    String message = items[2];
+                    ClientHandler client = server.getClientByNick(nickName);
+                    server.unicast(message, client);
+                    server.unicast(message, this);
+                }else {
+                    server.unicast("such command doesn't exist", this);
+                }
+
+            }else {
+                server.broadcast(received);
+            }
+        }
 
     }
 
+
     private void authLoop() throws IOException {
-        while (true){
+        while (true) {
             String msg = in.readUTF();
-            if(msg.startsWith(AUTH)){
+            if (msg.startsWith(AUTH)) {
                 String[] elements = msg.split(" ");
-                String nick = server.getAuthService().getNickByCredentials(elements[1],elements[2]);
-                if(nick != null){
+                String nick = server.getAuthService().getNickByCredentials(elements[1], elements[2]);
+                if (nick != null) {
                     sendMessage(AUTH_SUCCESSFUL + " " + nick);
                     this.nickanme = nick;
                     server.broadcast(this.nickanme + " has entered the chat room.");
                     break;
-                }else{
+                } else {
                     sendMessage("Wrong login/password");
                 }
-            }else {
+            } else {
                 sendMessage("Authorize first!");
             }
         }
     }
 
-    public void sendMessage(String str){
+    public void sendMessage(String str) {
         try {
             out.writeUTF(str);
             out.flush();

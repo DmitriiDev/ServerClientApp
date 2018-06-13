@@ -60,32 +60,9 @@ public class ChatWindow extends JFrame implements ServerConst {
 
 
         JButton sendButton = new JButton("Send");
-        message.addKeyListener
-                (new KeyAdapter() {
-                     public void keyPressed(KeyEvent e) {
-                         int key = e.getKeyCode();
-                         if (key == KeyEvent.VK_ENTER) {
-                             String text = message.getText().trim();
-                             if (text.length() > 0) {
-                                 chatHistory.append(text + newline);
-                                 message.selectAll();
-                                 message.setText("");
-                                 message.requestFocusInWindow();
-                             }
-                         }
-                     }
-                 }
-                );
+        message.addActionListener(e -> sendMessage() );
+        sendButton.addActionListener(e -> sendMessage());
 
-        sendButton.addActionListener(e -> {
-            String text = message.getText().trim();
-            if (text.length() > 0) {
-                chatHistory.append(text + newline);
-                message.selectAll();
-                message.setText("");
-                message.requestFocusInWindow();
-            }
-        });
 
         auth.addActionListener(e -> auth());
         password.addActionListener(e -> auth());
@@ -102,6 +79,12 @@ public class ChatWindow extends JFrame implements ServerConst {
         message.requestFocusInWindow();
     }
 
+    private void sendMessage() {
+        String msg = message.getText();
+        message.setText("");
+        clientConnection.sendMessage(msg);
+    }
+
     private void auth() {
         clientConnection.auth(login.getText(), new String(password.getPassword()));
     }
@@ -111,12 +94,22 @@ public class ChatWindow extends JFrame implements ServerConst {
         bottom.setVisible(clientConnection.isAuthorized());
     }
 
-    public static void main(String[] args) {
-        new ChatWindow();
-    }
 
     public void showMessage(String msg) {
         chatHistory.append(msg + "\n");
         chatHistory.moveCaretPosition(chatHistory.getDocument().getLength());
+    }
+
+    public static void main(String[] args) {
+        buildClientByNumber(1);
+        buildClientByNumber(2);
+        buildClientByNumber(3);
+    }
+
+    private static void buildClientByNumber(int i) {
+        ChatWindow cw = new ChatWindow();
+        cw.login.setText("login" + i);
+        cw.password.setText("pass" + i);
+        cw.auth.doClick();
     }
 }
