@@ -14,7 +14,7 @@ public class ClientHandler implements ServerAPI {
     private DataOutputStream out;
     private String nickanme;
 
-    public String getNickanme() {
+    public String getNickname() {
         return nickanme;
     }
 
@@ -48,12 +48,12 @@ public class ClientHandler implements ServerAPI {
                     break;
                 }
                 String[] items = received.split(" ");
-                if (items.length > 3 && items[0].equalsIgnoreCase(PM)) {
+                if (items.length > 2 && items[0].equalsIgnoreCase(PM)) {
                     String nickName = items[1];
                     String message = items[2];
                     ClientHandler client = server.getClientByNick(nickName);
-                    server.unicast(message, client);
-                    server.unicast(message, this);
+                    server.unicast( this.nickanme + ": " + message, client);
+                    server.unicast("you: " + message, this);
                 }else {
                     server.unicast("such command doesn't exist", this);
                 }

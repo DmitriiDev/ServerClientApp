@@ -80,7 +80,7 @@ public class ChatWindow extends JFrame implements ServerConst {
     }
 
     private void sendMessage() {
-        String msg = message.getText();
+        String msg =  message.getText();
         message.setText("");
         clientConnection.sendMessage(msg);
     }
