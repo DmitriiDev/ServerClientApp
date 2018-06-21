@@ -1,6 +1,7 @@
 //import com.sun.tools.javac.comp.Enter;
 package client;
 
+import common.Base;
 import common.ServerConst;
 
 import java.awt.*;
@@ -29,7 +30,6 @@ public class ChatWindow extends JFrame implements ServerConst {
         clientConnection.init(this);
 
         ImageIcon img = new ImageIcon("java.png");
-        setTitle("Chat");
         setSize(400, 400);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -73,7 +73,6 @@ public class ChatWindow extends JFrame implements ServerConst {
         add(jScrollPane, BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
         add(top, BorderLayout.NORTH);
-
         setLocationRelativeTo(null);
         setVisible(true);
         message.requestFocusInWindow();
@@ -87,6 +86,8 @@ public class ChatWindow extends JFrame implements ServerConst {
 
     private void auth() {
         clientConnection.auth(login.getText(), new String(password.getPassword()));
+        Base base = new Base();
+        setTitle(base.getNickByCredentials(login.getText(), password.getPassword().toString()));
     }
 
     public void switchWindows() {
@@ -98,7 +99,10 @@ public class ChatWindow extends JFrame implements ServerConst {
     public void showMessage(String msg) {
         chatHistory.append(msg + "\n");
         chatHistory.moveCaretPosition(chatHistory.getDocument().getLength());
+
     }
+
+
 
     public static void main(String[] args) {
         buildClientByNumber(1);
@@ -107,9 +111,11 @@ public class ChatWindow extends JFrame implements ServerConst {
     }
 
     private static void buildClientByNumber(int i) {
+        Base base = new Base();
         ChatWindow cw = new ChatWindow();
         cw.login.setText("login" + i);
         cw.password.setText("pass" + i);
-        cw.auth.doClick();
+        cw.auth.doClick();cw.setTitle(base.getNickByCredentials(cw.login.getText(), new String(cw.password.getPassword())));
+
     }
 }

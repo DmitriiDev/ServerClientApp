@@ -50,7 +50,11 @@ public class ClientHandler implements ServerAPI {
                 String[] items = received.split(" ");
                 if (items.length > 2 && items[0].equalsIgnoreCase(PM)) {
                     String nickName = items[1];
-                    String message = items[2];
+                    String message = "";
+                    for(int i = 2; i < items.length; i++){
+                        message += items[i] + " ";
+                    }
+
                     ClientHandler client = server.getClientByNick(nickName);
                     server.unicast( this.nickanme + ": " + message, client);
                     server.unicast("you: " + message, this);
@@ -75,7 +79,7 @@ public class ClientHandler implements ServerAPI {
                 if (nick != null) {
                     sendMessage(AUTH_SUCCESSFUL + " " + nick);
                     this.nickanme = nick;
-                    server.broadcast(this.nickanme + " has entered the chat room.");
+                 //   server.broadcast(this.nickanme + " has entered the chat room.");
                     break;
                 } else {
                     sendMessage("Wrong login/password");
