@@ -1,6 +1,7 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Base implements AuthService {
     class Entry{
@@ -15,6 +16,8 @@ public class Base implements AuthService {
         }
     }
 
+
+    private Vector<String> namesOfUsers = new Vector<>();
     private ArrayList<Entry> entries;
 
     public Base() {
@@ -22,6 +25,13 @@ public class Base implements AuthService {
         this.entries.add(new Entry("login1", "pass1", "Vasya"));
         this.entries.add(new Entry("login2", "pass2", "Petya"));
         this.entries.add(new Entry("login3", "pass3", "Katya"));
+    }
+
+    public Vector<String> listOfNames(){
+        for(Entry entry : entries){
+            namesOfUsers.add(entry.nick);
+        }
+        return namesOfUsers;
     }
 
     @Override

@@ -5,7 +5,6 @@ import common.Base;
 import common.ServerConst;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -17,15 +16,18 @@ public class ChatWindow extends JFrame implements ServerConst {
 
     JPanel top;
     JPanel bottom;
+    JPanel leftMenu;
 
     JTextField login;
     JPasswordField password;
     JButton auth;
+    JList jList;
 
     private ClientConnection clientConnection;
 
 
     public ChatWindow() {
+        Base base = new Base();
         clientConnection = new ClientConnection();
         clientConnection.init(this);
 
@@ -58,30 +60,43 @@ public class ChatWindow extends JFrame implements ServerConst {
         top.add(password);
         top.add(auth);
 
+        leftMenu = new JPanel();
+        leftMenu.setLayout(new BorderLayout());
+        jList = new JList(base.listOfNames());
+        jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jList.setLayoutOrientation(JList.VERTICAL);
+        jList.setVisibleRowCount(-1);
+        jList.setPreferredSize(new Dimension(75, 50));
+        leftMenu.add(jList, BorderLayout.CENTER);
 
         JButton sendButton = new JButton("Send");
-        message.addActionListener(e -> sendMessage() );
+        message.addActionListener(e -> sendMessage());
         sendButton.addActionListener(e -> sendMessage());
-
 
         auth.addActionListener(e -> auth());
         password.addActionListener(e -> auth());
-
         bottom.add(sendButton, BorderLayout.EAST);
         bottom.add(message, BorderLayout.CENTER);
 
         add(jScrollPane, BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
         add(top, BorderLayout.NORTH);
+        add(leftMenu, BorderLayout.EAST);
         setLocationRelativeTo(null);
         setVisible(true);
         message.requestFocusInWindow();
     }
 
     private void sendMessage() {
-        String msg =  message.getText();
-        message.setText("");
-        clientConnection.sendMessage(msg);
+        if (getNameFromList() != null) {
+            String msg = "/p " + getNameFromList() + " " + message.getText();
+            message.setText("");
+            clientConnection.sendMessage(msg);
+        } else {
+            String msg = message.getText();
+            message.setText("");
+            clientConnection.sendMessage(msg);
+        }
     }
 
     private void auth() {
@@ -95,14 +110,15 @@ public class ChatWindow extends JFrame implements ServerConst {
         bottom.setVisible(clientConnection.isAuthorized());
     }
 
+    public String getNameFromList() {
+        String pickedName = (String) jList.getSelectedValue();
+        return pickedName;
+    }
 
     public void showMessage(String msg) {
         chatHistory.append(msg + "\n");
         chatHistory.moveCaretPosition(chatHistory.getDocument().getLength());
-
     }
-
-
 
     public static void main(String[] args) {
         buildClientByNumber(1);
@@ -115,7 +131,7 @@ public class ChatWindow extends JFrame implements ServerConst {
         ChatWindow cw = new ChatWindow();
         cw.login.setText("login" + i);
         cw.password.setText("pass" + i);
-        cw.auth.doClick();cw.setTitle(base.getNickByCredentials(cw.login.getText(), new String(cw.password.getPassword())));
-
+        cw.auth.doClick();
+        cw.setTitle(base.getNickByCredentials(cw.login.getText(), new String(cw.password.getPassword())));
     }
 }
