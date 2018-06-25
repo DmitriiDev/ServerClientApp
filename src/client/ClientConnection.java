@@ -2,6 +2,7 @@ package client;
 
 import common.ServerAPI;
 import common.ServerConst;
+import common.UserAccount;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -13,6 +14,7 @@ public class ClientConnection implements ServerConst, ServerAPI {
     private DataInputStream in = null;
     private DataOutputStream out = null;
     boolean isAuthorized = false;
+
 
 
     public ClientConnection() {
@@ -72,14 +74,12 @@ public class ClientConnection implements ServerConst, ServerAPI {
                     view.showMessage(msg);
                 }
 
-                //                setAuthorized(true);
-//                view.switchWindows();
+                // setAuthorized(true);
+                // view.switchWindows();
                 break;
             } else {
                 view.showMessage(msg);
             }
-
-
         }
     }
 

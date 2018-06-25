@@ -3,10 +3,18 @@ package client;
 
 import common.Base;
 import common.ServerConst;
+import common.UserAccount;
+import server.Server;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ChatWindow extends JFrame implements ServerConst {
 
@@ -24,6 +32,8 @@ public class ChatWindow extends JFrame implements ServerConst {
     JList jList;
 
     private ClientConnection clientConnection;
+    private Map<String, String> historyOfUsers = new HashMap<String, String>();
+    ;
 
 
     public ChatWindow() {
@@ -62,12 +72,17 @@ public class ChatWindow extends JFrame implements ServerConst {
 
         leftMenu = new JPanel();
         leftMenu.setLayout(new BorderLayout());
+
         jList = new JList(base.listOfNames());
         jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jList.setLayoutOrientation(JList.VERTICAL);
         jList.setVisibleRowCount(-1);
         jList.setPreferredSize(new Dimension(75, 50));
         leftMenu.add(jList, BorderLayout.CENTER);
+
+        jList.getSelectionModel().addListSelectionListener(e -> {
+            valueChanged(e);
+        });
 
         JButton sendButton = new JButton("Send");
         message.addActionListener(e -> sendMessage());
@@ -110,6 +125,30 @@ public class ChatWindow extends JFrame implements ServerConst {
         bottom.setVisible(clientConnection.isAuthorized());
     }
 
+    public void valueChanged(ListSelectionEvent e) {
+        String messageHistoryOfuser = chatHistory.getText();
+        chatHistory.setText("");
+        Base base = new Base();
+        int selected = jList.getSelectedIndex();
+        int previous = selected == e.getFirstIndex() ? e.getLastIndex() : e.getFirstIndex();
+        Vector<String> listOfNames = base.listOfNames();
+        String previousName = listOfNames.get(previous);
+        String currentName = listOfNames.get(selected);
+        System.out.println("prev " + previousName + "| current" + currentName);
+        if (messageHistoryOfuser.length() > 0) {
+            historyOfUsers.put(previousName, messageHistoryOfuser);
+        }
+        System.out.println(historyOfUsers.size());
+        for (Map.Entry seekOfUserHistory : historyOfUsers.entrySet()) {
+            if (seekOfUserHistory.getKey().equals(currentName)) {
+                chatHistory.append((String) seekOfUserHistory.getValue());
+            }
+        }
+
+
+    }
+
+
     public String getNameFromList() {
         String pickedName = (String) jList.getSelectedValue();
         return pickedName;
@@ -124,6 +163,7 @@ public class ChatWindow extends JFrame implements ServerConst {
         buildClientByNumber(1);
         buildClientByNumber(2);
         buildClientByNumber(3);
+
     }
 
     private static void buildClientByNumber(int i) {
