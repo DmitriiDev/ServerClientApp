@@ -31,21 +31,20 @@ public class ClientConnection implements ServerConst, ServerAPI {
             this.socket = new Socket(SERVER_URL, PORT);
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-
-            new Thread(() ->
-            {
-                try {
-                    authLoop(view);
-                    receiveMessage(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }).start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        new Thread(() ->
+        {
+            try {
+                authLoop(view);
+                receiveMessage(view);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }).start();
     }
 
     private void authLoop(ChatWindow view) throws IOException {
@@ -56,6 +55,7 @@ public class ClientConnection implements ServerConst, ServerAPI {
                 view.switchWindows();
                 break;
             }
+            view.showMessage(msg);
         }
     }
 
@@ -71,15 +71,21 @@ public class ClientConnection implements ServerConst, ServerAPI {
                 } else {
                     view.showMessage(msg);
                 }
-
-                //                setAuthorized(true);
-//                view.switchWindows();
+                setAuthorized(true);
+                view.switchWindows();
                 break;
             } else {
                 view.showMessage(msg);
             }
+        }
+    }
 
-
+    public void sendMessage(String str) {
+        try {
+            out.writeUTF(str);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -92,17 +98,7 @@ public class ClientConnection implements ServerConst, ServerAPI {
         }
     }
 
-    public void sendMessage(String str){
-        try {
-            out.writeUTF(str);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void disconnect(){
+    public void disconnect() {
         try {
             out.writeUTF(CLOSE_CONNECTION);
             out.flush();

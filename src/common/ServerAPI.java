@@ -6,4 +6,5 @@ public interface ServerAPI {
     String AUTH_SUCCESSFUL = "/authok";
     String PM = "/p";
     String CLOSE_CONNECTION = "/end";
+    String USER_LIST = "/userlist";
 }

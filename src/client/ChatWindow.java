@@ -74,6 +74,7 @@ public class ChatWindow extends JFrame implements ServerConst {
         add(bottom, BorderLayout.SOUTH);
         add(top, BorderLayout.NORTH);
         setLocationRelativeTo(null);
+        switchWindows();
         setVisible(true);
         message.requestFocusInWindow();
     }
@@ -105,9 +106,12 @@ public class ChatWindow extends JFrame implements ServerConst {
 
 
     public static void main(String[] args) {
-        buildClientByNumber(1);
-        buildClientByNumber(2);
-        buildClientByNumber(3);
+
+        new ChatWindow();
+
+//        buildClientByNumber(1);
+//        buildClientByNumber(2);
+//        buildClientByNumber(3);
     }
 
     private static void buildClientByNumber(int i) {

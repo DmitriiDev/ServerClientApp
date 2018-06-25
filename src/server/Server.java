@@ -44,7 +44,17 @@ public class Server implements ServerConst {
 
     public void broadcast(String msgToAll) {
         for (ClientHandler client : clients) {
-            client.sendMessage(client.getNickname() + ":\n" + msgToAll);
+            client.sendMessage(msgToAll);
+        }
+    }
+
+    public void broadcast(String nick, String separator, String pureMsg) {
+        for (ClientHandler client : clients) {
+            System.out.println(client.getNickname());
+            if (client.getNickname().equals(nick))
+                client.sendMessage("You" + separator + pureMsg);
+            else
+                client.sendMessage(nick + separator + pureMsg);
         }
     }
 
@@ -54,8 +64,8 @@ public class Server implements ServerConst {
 
     public void unicast(String msg, ClientHandler client) {
         for (ClientHandler cl : clients) {
-            if(cl.equals(client)){
-                client.sendMessage( msg);
+            if (cl.equals(client)) {
+                client.sendMessage(msg);
             }
 
         }
@@ -69,7 +79,7 @@ public class Server implements ServerConst {
     }
 
     public ClientHandler getClientByNick(String nickName) {
-        for(ClientHandler clientHandler : clients){
+        for (ClientHandler clientHandler : clients) {
             if (clientHandler.getNickname().equals(nickName)) {
                 return clientHandler;
             }
