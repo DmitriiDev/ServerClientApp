@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4079f760-bba9-4cbe-9a92-ed76f1187647" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/common/UserAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ServerClientApp/client/ChatWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ServerClientApp/client/ChatWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ServerClientApp/client/ClientConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ServerClientApp/client/ClientConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ServerClientApp/common/Base$Entry.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ServerClientApp/common/Base.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ServerClientApp/common/Base.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ServerClientApp/common/Base2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ChatWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ChatWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Base.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Base2.java" beforeDir="false" />
-    </list>
+    <list default="true" id="4079f760-bba9-4cbe-9a92-ed76f1187647" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -344,7 +332,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="825" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32876712" />
@@ -354,12 +341,12 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007153" side_tool="true" weight="0.24246575" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.24175824" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.24175824" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32876712" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.20958903" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4972875" visible="true" weight="0.16881259" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4972875" visible="true" weight="0.16881259" />
       <window_info id="Structure" order="1" sideWeight="0.5027125" side_tool="true" weight="0.16452074" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
