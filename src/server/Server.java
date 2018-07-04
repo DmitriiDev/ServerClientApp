@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
+import static common.ServerAPI.USER_LIST;
+
 public class Server implements ServerConst {
     private ServerSocket mServer = null;
     private Socket mSocket = null;
@@ -60,6 +62,7 @@ public class Server implements ServerConst {
 
     public void unsubscribeMe(ClientHandler clientHandler) {
         this.clients.remove(clientHandler);
+        broadcastUserList();
     }
 
     public void unicast(String msg, ClientHandler client) {
@@ -89,5 +92,14 @@ public class Server implements ServerConst {
 
     public static void main(String[] args) {
         new Server();
+    }
+
+    public void broadcastUserList() {
+        StringBuffer buffer = new StringBuffer(USER_LIST);
+
+        for(ClientHandler cl : clients){
+            buffer.append(" " + cl.getNickname());
+        }
+        broadcast(buffer.toString());
     }
 }

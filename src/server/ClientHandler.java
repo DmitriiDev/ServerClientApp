@@ -60,7 +60,8 @@ public class ClientHandler implements ServerAPI {
                 if (nick != null) {
                     sendMessage(AUTH_SUCCESSFUL + " " + nick);
                     this.nickanme = nick;
-                    server.broadcast(this.nickanme," ","has entered the chat room.");
+                    server.broadcast(this.nickanme, " ", "has entered the chat room.");
+                    server.broadcastUserList();
                     break;
                 } else {
                     sendMessage("Wrong login/password");
@@ -101,6 +102,8 @@ public class ClientHandler implements ServerAPI {
     }
 
     public void sendMessage(String str) {
+        if (str.trim().isEmpty())
+            return;
         try {
             out.writeUTF(str);
             out.flush();

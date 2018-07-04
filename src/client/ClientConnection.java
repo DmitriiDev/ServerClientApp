@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ClientConnection implements ServerConst, ServerAPI {
     private Socket socket = null;
@@ -64,16 +65,23 @@ public class ClientConnection implements ServerConst, ServerAPI {
             String msg = in.readUTF();
             String[] elements = msg.split(" ");
             if (msg.startsWith(SYSTEM_SYMBOL)) {
+
                 if (elements[0].equals(CLOSE_CONNECTION)) {
                     setAuthorized(false);
                     view.showMessage("Connection closed");
                     view.switchWindows();
-                } else {
-                    view.showMessage(msg);
                 }
+                if(msg.startsWith(USER_LIST)) {
+                    String[]users = msg.split(" ");
+                    String [] newArray = Arrays.copyOfRange(users, 1, users.length);
+                    Arrays.sort(newArray);
+                    view.showUserList(newArray);
+                }
+
                 setAuthorized(true);
                 view.switchWindows();
                 break;
+
             } else {
                 view.showMessage(msg);
             }

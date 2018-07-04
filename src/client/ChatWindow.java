@@ -14,9 +14,11 @@ public class ChatWindow extends JFrame implements ServerConst {
     private final static String newline = "\n";
     private JTextField message;
     private JTextArea chatHistory;
+    private JList userList;
 
     JPanel top;
     JPanel bottom;
+    JPanel east;
 
     JTextField login;
     JPasswordField password;
@@ -50,6 +52,10 @@ public class ChatWindow extends JFrame implements ServerConst {
         chatHistory.setEditable(false);
         JScrollPane jScrollPane = new JScrollPane(chatHistory);
 
+        userList = new JList();
+        east = new JPanel();
+        east.setPreferredSize(new Dimension(100, 300));
+
         login = new JTextField();
         password = new JPasswordField();
         auth = new JButton("Log in");
@@ -57,6 +63,7 @@ public class ChatWindow extends JFrame implements ServerConst {
         top.add(login);
         top.add(password);
         top.add(auth);
+        east.add(userList);
 
 
         JButton sendButton = new JButton("Send");
@@ -73,6 +80,7 @@ public class ChatWindow extends JFrame implements ServerConst {
         add(jScrollPane, BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
         add(top, BorderLayout.NORTH);
+        add(east, BorderLayout.EAST);
         setLocationRelativeTo(null);
         switchWindows();
         setVisible(true);
@@ -94,8 +102,8 @@ public class ChatWindow extends JFrame implements ServerConst {
     public void switchWindows() {
         top.setVisible(!clientConnection.isAuthorized());
         bottom.setVisible(clientConnection.isAuthorized());
+        east.setVisible(clientConnection.isAuthorized());
     }
-
 
     public void showMessage(String msg) {
         chatHistory.append(msg + "\n");
@@ -103,7 +111,10 @@ public class ChatWindow extends JFrame implements ServerConst {
 
     }
 
-
+    public void showUserList(String[] users){
+//        userList.removeAll();
+        userList.setListData(users);
+    }
 
     public static void main(String[] args) {
 
